@@ -8,16 +8,16 @@ function App() {
   const [task, setTask] = useState([]);
   const [editedTask, setEditedTask] = useState("");
   const [editedIndex, setEditedIndex] = useState();
+  const [showAlert, setShowAlert] = useState(false);
 
   const inputRef = useRef();
-  const taskRef = useRef();
   const editRef = useRef();
 
   function addTask() {
     const input = inputRef.current.value;
     const newTask = { completed: false, value: input };
 
-    inputRef.current.value ? setTask([...task, newTask]) : null;
+    inputRef.current.value ? setTask([...task, newTask]) : handleAlert();
     inputRef.current.value = "";
   }
 
@@ -40,16 +40,30 @@ function App() {
     setTask(updatedTasks);
   }
 
+  const handleAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  };
+
   return (
     <>
-      <div className="card p-5 bg-primary-subtle" style={{ width: "40rem" }}>
-        <h2 className="mb-5">To Do list</h2>
+      <div className=" p-5" style={{ width: "30rem", marginLeft: "40rem" }}>
+        {/* <h2 className="mb-5">To Do list</h2> */}
+
+        {showAlert && (
+          <div className="alert alert-danger p-2" role="alert">
+            Please enter your note...
+          </div>
+        )}
+
         <div className="input-group mb-3">
           <input
             ref={inputRef}
             type="text"
             className="form-control"
-            placeholder="Enter new task"
+            placeholder="Enter new note..."
           ></input>
           <button className="btn btn-primary" type="button" onClick={addTask}>
             Add
@@ -66,7 +80,6 @@ function App() {
                   item.completed ? "taskDone" : ""
                 }`}
                 onClick={() => taskDone(index)}
-                ref={taskRef}
               >
                 {item.value}
               </li>
@@ -90,6 +103,7 @@ function App() {
         </ul>
       </div>
 
+      {/*Edit Task Modal */}
       <div
         className="modal fade"
         id="exampleModal"
@@ -116,6 +130,7 @@ function App() {
               value={editedTask}
               ref={editRef}
               onChange={(event) => setEditedTask(event.target.value)}
+              style={{ maxWidth: "500px" }}
             ></input>
             <div className="modal-footer">
               <button
