@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-
 import "./App.css";
 
 function App() {
